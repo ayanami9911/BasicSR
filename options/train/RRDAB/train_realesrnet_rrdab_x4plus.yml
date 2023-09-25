@@ -1,5 +1,5 @@
 # general settings
-name: train_RealESRNetx4plus_1000k_B12G4
+name: 001_train_RealESRNetx4plus_1000k_B12G1
 model_type: RealESRNetModel
 scale: 4
 num_gpu: auto  # auto: can infer from your visible devices automatically. official: 4 GPUs
@@ -79,7 +79,7 @@ datasets:
 
 # network structures
 network_g:
-  type: RRDBNet
+  type: RRDABNet
   num_in_ch: 3
   num_out_ch: 3
   num_feat: 64
@@ -141,3 +141,4 @@ logger:
 dist_params:
   backend: nccl
   port: 29500
+

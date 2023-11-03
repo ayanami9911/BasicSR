@@ -1,7 +1,7 @@
 # general settings
-name: 001_train_RealESRGAN_RRDAB_x2plus_400k_B12G4
+name: 001_train_RealESRGAN_Double_RRDAB_x4plus_2000k_B12G1
 model_type: RealESRGANModel
-scale: 2
+scale: 4
 num_gpu: auto  # auto: can infer from your visible devices automatically. official: 4 GPUs
 manual_seed: 0
 
@@ -38,8 +38,8 @@ datasets:
   train:
     name: DF2K+OST
     type: RealESRGANDataset
-    dataroot_gt: datasets/DF2K
-    meta_info: datasets/DF2K/meta_info/meta_info_DF2Kmultiscale+OST_sub.txt
+    dataroot_gt: datasets/df2k_ost/GT_sub
+    meta_info: datasets/df2k_ost/meta_info_df2k_ost.txt
     io_backend:
       type: disk
 
@@ -79,6 +79,21 @@ datasets:
   #   dataroot_lq: path_to_lq
   #   io_backend:
   #     type: disk
+  val:
+    name: Set5
+    type: PairedImageDataset
+    dataroot_gt: datasets/Set5/GTmod12
+    dataroot_lq: datasets/Set5/LRbicx4
+    io_backend:
+      type: disk
+
+  val_2:
+    name: Set14
+    type: PairedImageDataset
+    dataroot_gt: datasets/Set14/GTmod12
+    dataroot_lq: datasets/Set14/LRbicx4
+    io_backend:
+      type: disk
 
 # network structures
 network_g:
@@ -88,7 +103,7 @@ network_g:
   num_feat: 64
   num_block: 23
   num_grow_ch: 32
-  scale: 2
+  scale: 4
 
 network_d:
   type: UNetDiscriminatorSN
@@ -99,7 +114,7 @@ network_d:
 # path
 path:
   # use the pre-trained Real-ESRNet model
-  pretrain_network_g: experiments/pretrained_models/RealESRNet_x2plus.pth
+  pretrain_network_g: experiments/001_train_RealESRNet_RRDAB_x4plus_400k_B12G1/models/net_g_latest.pth
   param_key_g: params_ema
   strict_load_g: true
   resume_state: ~
@@ -120,10 +135,10 @@ train:
 
   scheduler:
     type: MultiStepLR
-    milestones: [400000]
+    milestones: [2000000]
     gamma: 0.5
 
-  total_iter: 400000
+  total_iter: 2000000
   warmup_iter: -1  # no warm up
 
   # losses
@@ -160,20 +175,29 @@ train:
 
 # Uncomment these for validation
 # validation settings
-# val:
-#   val_freq: !!float 5e3
-#   save_img: True
+val:
+   val_freq: !!float 5e3
+   save_img: True
 
-#   metrics:
-#     psnr: # metric name
-#       type: calculate_psnr
-#       crop_border: 4
-#       test_y_channel: false
+   metrics:
+     psnr: # metric name
+       type: calculate_psnr
+       crop_border: 4
+       test_y_channel: false
+     niqe:
+       type: calculate_niqe
+       crop_border: 4
+       better: lower
+     ssim:
+       type: calculate_ssim
+       crop_border: 4
+       better: higher
+
 
 # logging settings
 logger:
   print_freq: 100
-  save_checkpoint_freq: !!float 5e3
+  save_checkpoint_freq: !!float 1e4
   use_tb_logger: true
   wandb:
     project: ~

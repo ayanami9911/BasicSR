@@ -1,5 +1,5 @@
 # general settings
-name: 001_train_RealESRNet_RRDAB_x4plus_400k_B12G1
+name: 001_train_RealESRNet_RRDAB_x4plus_1000k_B12G1
 model_type: RealESRNetModel
 scale: 4
 num_gpu: auto  # auto: can infer from your visible devices automatically. official: 4 GPUs
@@ -136,6 +136,14 @@ val:
        type: calculate_psnr
        crop_border: 4
        test_y_channel: false
+     niqe:
+         type: calculate_niqe
+         crop_border: 4
+         better: lower
+     ssim:
+         type: calculate_ssim
+         crop_border: 4
+         better: higher
 
 # logging settings
 logger:

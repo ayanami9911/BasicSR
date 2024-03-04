@@ -1,5 +1,5 @@
 # general settings
-name: 001_train_RealESRGAN_Double_RRDAB_x4plus_2000k_B12G1
+name: 003_train_RealESRGAN_Double_RRDAB_x4plus_2000k_B12G1
 model_type: RealESRGANModel
 scale: 4
 num_gpu: auto  # auto: can infer from your visible devices automatically. official: 4 GPUs
@@ -114,7 +114,7 @@ network_d:
 # path
 path:
   # use the pre-trained Real-ESRNet model
-  pretrain_network_g: experiments/001_train_RealESRNet_RRDAB_x4plus_400k_B12G1/models/net_g_latest.pth
+  pretrain_network_g: experiments/001_train_RealESRNet_RRDAB_x4plus_1000k_B12G1/models/net_g_1000000.pth
   param_key_g: params_ema
   strict_load_g: true
   resume_state: ~
@@ -138,7 +138,7 @@ train:
     milestones: [2000000]
     gamma: 0.5
 
-  total_iter: 2000000
+  total_iter: 1000000
   warmup_iter: -1  # no warm up
 
   # losses

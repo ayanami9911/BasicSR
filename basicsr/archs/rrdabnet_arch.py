@@ -30,7 +30,7 @@ class ResidualDenseBlock_3(nn.Module):
 
     def forward(self, x):
         x1 = self.lrelu(self.conv1(x))
-        import ipdb;ipdb.set_trace()
+        # import ipdb;ipdb.set_trace()
         x2 = self.lrelu(self.conv2(torch.cat((x, x1), 1)))
         x3 = self.lrelu(self.conv3(torch.cat((x, x1, x2), 1)))
         x4 = self.lrelu(self.conv4(torch.cat((x, x1, x2, x3), 1)))
@@ -50,11 +50,11 @@ class ResidualDenseBlock_5(nn.Module):
 
     def __init__(self, num_feat=64, num_grow_ch=32, ):
         super(ResidualDenseBlock_5, self).__init__()
-        self.conv1 = nn.Conv2d(num_feat, num_grow_ch, 5, 1, 1)
-        self.conv2 = nn.Conv2d(num_feat + num_grow_ch, num_grow_ch, 5, 1, 1)
-        self.conv3 = nn.Conv2d(num_feat + 2 * num_grow_ch, num_grow_ch, 5, 1, 1)
-        self.conv4 = nn.Conv2d(num_feat + 3 * num_grow_ch, num_grow_ch, 5, 1, 1)
-        self.conv5 = nn.Conv2d(num_feat + 4 * num_grow_ch, num_feat, 5, 1, 1)
+        self.conv1 = nn.Conv2d(num_feat, num_grow_ch, 5, 1, 'same')
+        self.conv2 = nn.Conv2d(num_feat + num_grow_ch, num_grow_ch, 5, 1, 'same')
+        self.conv3 = nn.Conv2d(num_feat + 2 * num_grow_ch, num_grow_ch, 5, 1, 'same')
+        self.conv4 = nn.Conv2d(num_feat + 3 * num_grow_ch, num_grow_ch, 5, 1, 'same')
+        self.conv5 = nn.Conv2d(num_feat + 4 * num_grow_ch, num_feat, 5, 1, 'same')
 
         self.lrelu = nn.LeakyReLU(negative_slope=0.2, inplace=True)
 
@@ -63,7 +63,7 @@ class ResidualDenseBlock_5(nn.Module):
 
     def forward(self, x):
         x1 = self.lrelu(self.conv1(x))
-        import ipdb;ipdb.set_trace()
+      #  import ipdb;ipdb.set_trace()
         x2 = self.lrelu(self.conv2(torch.cat((x, x1), 1)))
         x3 = self.lrelu(self.conv3(torch.cat((x, x1, x2), 1)))
         x4 = self.lrelu(self.conv4(torch.cat((x, x1, x2, x3), 1)))
@@ -83,11 +83,11 @@ class ResidualDenseBlock_7(nn.Module):
 
     def __init__(self, num_feat=64, num_grow_ch=32, ):
         super(ResidualDenseBlock_7, self).__init__()
-        self.conv1 = nn.Conv2d(num_feat, num_grow_ch, 7, 1, 1)
-        self.conv2 = nn.Conv2d(num_feat + num_grow_ch, num_grow_ch, 7, 1, 1)
-        self.conv3 = nn.Conv2d(num_feat + 2 * num_grow_ch, num_grow_ch, 7, 1, 1)
-        self.conv4 = nn.Conv2d(num_feat + 3 * num_grow_ch, num_grow_ch, 7, 1, 1)
-        self.conv5 = nn.Conv2d(num_feat + 4 * num_grow_ch, num_feat, 7, 1, 1)
+        self.conv1 = nn.Conv2d(num_feat, num_grow_ch, 7, 1, 'same')
+        self.conv2 = nn.Conv2d(num_feat + num_grow_ch, num_grow_ch, 7, 1, 'same')
+        self.conv3 = nn.Conv2d(num_feat + 2 * num_grow_ch, num_grow_ch, 7, 1, 'same')
+        self.conv4 = nn.Conv2d(num_feat + 3 * num_grow_ch, num_grow_ch, 7, 1, 'same')
+        self.conv5 = nn.Conv2d(num_feat + 4 * num_grow_ch, num_feat, 7, 1, 'same')
 
         self.lrelu = nn.LeakyReLU(negative_slope=0.2, inplace=True)
 
@@ -96,7 +96,7 @@ class ResidualDenseBlock_7(nn.Module):
 
     def forward(self, x):
         x1 = self.lrelu(self.conv1(x))
-        import ipdb;ipdb.set_trace()
+      #  import ipdb;ipdb.set_trace()
         x2 = self.lrelu(self.conv2(torch.cat((x, x1), 1)))
         x3 = self.lrelu(self.conv3(torch.cat((x, x1, x2), 1)))
         x4 = self.lrelu(self.conv4(torch.cat((x, x1, x2, x3), 1)))
@@ -172,7 +172,6 @@ class RRDAB(nn.Module):
     def __init__(self, num_feat, num_grow_ch=32):
         super(RRDAB, self).__init__()
         self.rdb1 = ResidualDenseBlock_3(num_feat, num_grow_ch)
-
         self.rdb2 = ResidualDenseBlock_5(num_feat, num_grow_ch)
         self.rdb3 = ResidualDenseBlock_7(num_feat, num_grow_ch)
         # 降维1x1卷积层
@@ -182,7 +181,7 @@ class RRDAB(nn.Module):
 
     def forward(self, x):
         out1 = self.rdb1(x)
-        import ipdb;ipdb.set_trace()
+        # import ipdb;ipdb.set_trace()
         out2 = self.rdb2(x)
         out3 = self.rdb3(x)
 
